@@ -1,0 +1,50 @@
+PS1='Jeff%~%# '
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/jeff/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/jeff/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/jeff/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/jeff/anaconda3/bin:$PATH"
+    fi
+fi
+
+alias jupyter_lab="jupyter lab --app-dir /opt/homebrew/share/jupyter/lab"
+alias julia="~/Applications/julia"
+alias class="cd ~/Dropbox\ \(MIT\)/MIT/classes"
+alias dorp="cd ~/Dropbox\ \(MIT\)"
+
+alias rm="rm -i"
+
+alias new_tex() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: createtex <filename>"
+        return 1
+    fi
+
+    filename="$1.tex"
+    cat <<EOF > "$filename"
+\documentclass{article}
+\usepackage{jeff}
+
+\title{Title}
+\author{Jeffrey Chen}
+
+\begin{document}
+\maketitle
+
+\end{document}
+EOF
+    echo "Created $filename with a basic TeX template."
+}
+
+unset __conda_setup
+# <<< conda initialize <<<
+
+export PATH=/usr/local/cuda/bin:$PATH
+export DYLD_LIBRARY_PATH=/usr/local/cuda/lib:$DYLD_LIBRARY_PATH
+

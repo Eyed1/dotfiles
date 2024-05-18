@@ -1,0 +1,204 @@
+" Turn syntax hghlighting on
+syntax on 
+set background=dark    
+colorscheme hybrid
+"VIM BASIC SETTINGS ------------- {{{
+
+set number
+set cursorline
+set culopt=both
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+set nobackup
+set scrolloff=30
+
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
+set showmatch
+set showmode
+set history=100
+set textwidth=0
+set wrap
+set linebreak
+set nomodeline
+set cursorline
+set modelineexpr
+set backspace=indent,eol,start
+
+set wildmenu
+set wildmode=longest:full
+set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
+set nocompatible
+set showcmd
+set matchtime=2
+set viminfo='100,<1000,s100,h
+set foldlevel=99
+set timeoutlen=300 
+
+filetype on
+filetype plugin on
+filetype indent on
+
+" }}}
+
+" PLUGINS --------------------------- {{{
+execute pathogen#infect()
+filetype plugin indent on
+
+" NERDTree
+nnoremap <leader>n :NERDTree<cr>
+
+" vimtex
+"
+let g:vimtex_view_method = 'zathura'
+let g:Tex_IgnoredWarnings = 
+    \'Underfull'."\n".
+    \'Overfull'."\n".
+    \'specifier changed to'."\n".
+    \'You have requested'."\n".
+    \'Missing number, treated as zero.'."\n".
+    \'There were undefined references'."\n".
+    \'Citation %.%# undefined'."\n".
+    \'Double space found.'."\n"
+let g:Tex_IgnoreLevel = 8
+syntax enable
+
+" Ale
+let g:ale_linters = {'cpp' : ['g++ -std=c++2a']}
+let g:ale_virtualtext_cursor = 'disabled'
+
+" Helptags ~/.vim/bundle
+
+" call plug#begin('~/.vim/plugged')
+"     Plug 'preservim/nerdtree'
+"     Plug 'dense-analysis/ale'
+"     
+"     "Color Schemes
+"     Plug 'tomasiser/vim-code-dark'
+"     Plug 'Mofiqul/vscode.nvim'
+" call plug#end()
+" }}}
+
+" MAPPINGS -------------------------- {{{
+
+let mapleader = " " 
+let localmapleader = ","
+
+nnoremap <leader>ev :vsplit ~/Desktop/code/vimscript/.vimrc <cr>
+
+inoremap <c-z> <esc>ui
+inoremap jk <esc>
+inoremap <esc> <nop>
+nnoremap H $
+nnoremap L 0
+
+inoremap <Up> <nop>
+noremap <Down> <nop>
+inoremap <Left> <nop>
+inoremap <Right> <nop>
+
+nnoremap <Up> <nop>
+nnoremap <Down> <nop>
+nnoremap <Left> <nop>
+nnoremap <Right> <nop>
+nnoremap / /\v
+
+nnoremap <leader>W :match Error /\v $/<cr> 
+nnoremap <leader>w :match none<cr>
+nnoremap <leader>h :noh<cr>
+
+nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+
+tnoremap <C-l> <C-w>l
+tnoremap <C-h> <C-w>h
+tnoremap <C-j> <C-w>j
+tnoremap <C-k> <C-w>k
+nnoremap <leader>W :match Error /\v $/<cr> 
+nnoremap <leader>w :match none<cr>
+nnoremap <leader>h :noh<cr>
+
+
+
+nnoremap <C-w>l <nop>
+nnoremap <C-w>h <nop>
+nnoremap <C-w>j <nop>
+nnoremap <C-w>k <nop>
+
+nnoremap <C-s> :w<cr>
+nnoremap <leader>s :w<cr>
+inoremap <C-s> :w<cr>
+
+nnoremap <leader>q :q<cr>
+nnoremap <leader>e :! open . <cr><cr>
+nnoremap <leader>g :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
+abbrev @@ jeffreychen51@gmail.com   
+
+" }}}
+
+" VIMSCRIPT ------------------------- {{{
+
+
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType vim :execute "normal! zm" 
+    autocmd FileType vim nnoremap <leader>sv :source $MYVIMRC<cr>
+
+augroup END
+
+augroup filetype_cpp
+    autocmd!
+    autocmd FileType cpp nnoremap <buffer> <space>c I//<esc>
+    autocmd FileType cpp setlocal foldmethod=syntax
+    autocmd FileType cpp setlocal foldnestmax=19
+    autocmd FileType cpp nnoremap <F7> :make %<<cr>
+    autocmd FileType cpp nnoremap <F6> :w<bar>term ++shell g++ -std=c++2a %:p -o a<cr>
+    autocmd FileType cpp nnoremap <F5> :!/%<<cr>
+    autocmd FileType cpp nnoremap <leader>d :! g++ -std=c++2a %:p -o a<cr>
+augroup END
+
+augroup filetype_python
+    autocmd!
+    autocmd FileType python nnoremap <leader>d :! python3 %:p <cr>
+    autocmd FileType python setlocal foldmethod=indent
+    autocmd FileType python setlocal foldnestmax=19
+    " autocmd FileType python nnoremap <leader>f :! flask --app %:p run <cr>
+augroup END
+
+augroup filetype_tex
+    autocmd!
+"    autocmd FileType tex nnoremap <buffer> <space>c I%<esc>
+    autocmd FileType tex nnoremap <buffer> <space>sv :vsplit ~/Library/texmf/tex/latex/jeff/jeff.sty <cr>
+"    autocmd FileType tex nnoremap <F7> :pdflatex $
+augroup END
+
+" }}}
+
+" STATUS LINE ----------------------- {{{
+
+" Clear status line when vimrc is reloaded.
+set statusline=
+
+" Status line left side.
+set statusline+=\ %.40F\ -\ Filetype:\ %y\ %M
+
+" Use a divider to separate the left side from the right side.
+set statusline+=%=
+
+" Status line right side.
+set statusline+=row:\ %04l\ total:\ %04L\ col:\ %03c\ percent:\ %3p%%\ char:\ %06o\ type:\ %b
+
+" Show the status on the second to last line.
+set laststatus=2
+
+" }}}
+" 
+
+
