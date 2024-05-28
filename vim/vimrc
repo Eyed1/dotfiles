@@ -48,7 +48,7 @@ filetype indent on
 
 " PLUGINS --------------------------- {{{
 
-set runtimepath+=~/Desktop/dotfiles/vim/vim
+" set runtimepath+=~/Desktop/dotfiles/vim/vim
 " execute pathogen#infect()
 filetype plugin indent on
 
@@ -87,7 +87,7 @@ let g:ale_virtualtext_cursor = 'disabled'
 
 " Helptags ~/.vim/bundle
 
-call plug#begin('~/Desktop/dotfiles/vim/vim/bundle')
+call plug#begin('~/.vim/plugged')
     Plug 'preservim/nerdtree'
     Plug 'dense-analysis/ale'
     Plug 'lervag/vimtex'
