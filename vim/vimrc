@@ -2,7 +2,7 @@
 syntax on 
 set background=dark    
 colorscheme hybrid
-"VIM BASIC SETTINGS ------------- {{{
+"VIM BASIC SETTINGS ------------- {{{ 
 
 set number
 set cursorline
@@ -28,6 +28,7 @@ set nomodeline
 set cursorline
 set modelineexpr
 set backspace=indent,eol,start
+set guicursor=n-v-c-i:block
 
 set wildmenu
 set wildmode=longest:full
@@ -48,11 +49,11 @@ filetype indent on
 " PLUGINS --------------------------- {{{
 
 set runtimepath+=~/Desktop/dotfiles/vim/vim
-execute pathogen#infect()
+" execute pathogen#infect()
 filetype plugin indent on
 
 " NERDTree
-nnoremap <leader>n :NERDTree<cr>
+nnoremap <C-n> :NERDTree<cr>  
 
 " vimtex
 "
@@ -69,20 +70,37 @@ let g:Tex_IgnoredWarnings =
 let g:Tex_IgnoreLevel = 8
 syntax enable
 
+" Markdown Preview
+
+function OpenMarkdownPreview (url)
+    execute "silent ! open -a 'Google Chrome' -n --args --new-window " . a:url
+endfunction
+let g:mkdp_browserfunc = 'OpenMarkdownPreview'
+
+" Telescope
+nnoremap <C-f>f :Telescope find_files<cr>
+nnoremap <C-f>g :Telescope live_grep<cr>
+
 " Ale
 let g:ale_linters = {'cpp' : ['g++ -std=c++2a']}
 let g:ale_virtualtext_cursor = 'disabled'
 
 " Helptags ~/.vim/bundle
 
-" call plug#begin('~/.vim/plugged')
-"     Plug 'preservim/nerdtree'
-"     Plug 'dense-analysis/ale'
-"     
-"     "Color Schemes
+call plug#begin('~/Desktop/dotfiles/vim/vim/bundle')
+    Plug 'preservim/nerdtree'
+    Plug 'dense-analysis/ale'
+    Plug 'lervag/vimtex'
+    Plug 'github/copilot.vim'
+    Plug 'tmhedberg/SimpylFold'
+    Plug 'ellisonleao/glow.nvim'
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
+     "Color Schemes
 "     Plug 'tomasiser/vim-code-dark'
 "     Plug 'Mofiqul/vscode.nvim'
-" call plug#end()
+call plug#end()
 " }}}
 
 " MAPPINGS -------------------------- {{{
@@ -146,7 +164,6 @@ abbrev @@ jeffreychen51@gmail.com
 
 " VIMSCRIPT ------------------------- {{{
 
-
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
@@ -163,12 +180,12 @@ augroup filetype_cpp
     autocmd FileType cpp nnoremap <F7> :make %<<cr>
     autocmd FileType cpp nnoremap <F6> :w<bar>term ++shell g++ -std=c++2a %:p -o a<cr>
     autocmd FileType cpp nnoremap <F5> :!/%<<cr>
-    autocmd FileType cpp nnoremap <leader>d :! g++ -std=c++2a %:p -o a<cr>
+    autocmd FileType cpp nnoremap <leader>d :! g++ -std=c++2a %:t -o a<cr>
 augroup END
 
 augroup filetype_python
     autocmd!
-    autocmd FileType python nnoremap <leader>d :! python3 %:p <cr>
+    autocmd FileType python nnoremap <leader>d :! python3 %:t <cr>
     autocmd FileType python setlocal foldmethod=indent
     autocmd FileType python setlocal foldnestmax=19
     " autocmd FileType python nnoremap <leader>f :! flask --app %:p run <cr>
@@ -179,6 +196,11 @@ augroup filetype_tex
 "    autocmd FileType tex nnoremap <buffer> <space>c I%<esc>
     autocmd FileType tex nnoremap <buffer> <space>sv :vsplit ~/Library/texmf/tex/latex/jeff/jeff.sty <cr>
 "    autocmd FileType tex nnoremap <F7> :pdflatex $
+augroup END
+
+augroup filetype_md
+    autocmd!
+    autocmd FileType markdown nnoremap <leader>d :MarkdownPreview<cr>
 augroup END
 
 " }}}
